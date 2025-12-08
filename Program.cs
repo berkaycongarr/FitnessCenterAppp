@@ -1,37 +1,39 @@
-﻿using FitnessCenter.Data; // <-- senin DbContext sınıfının olacağı klasör (oluşturacağız)
-using FitnessCenterApp.Data;
+﻿using FitnessApp.Entities; // Senin projendeki Namespace (Entities klasörünün olduğu yer)
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1️⃣ MVC Servislerini ekle
-builder.Services.AddControllersWithViews();
+// ==========================================
+// 1. SERVİS AYARLARI (Dependency Injection)
+// ==========================================
 
-// 2️⃣ Entity Framework Core - SQL Server bağlantısı
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+// A) Veritabanı Bağlantısı (SQL Server)
+builder.Services.AddDbContext<FitnessDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 3️⃣ Session (oturum) yönetimi aktif et
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Oturum süresi (30 dk)
-    options.Cookie.HttpOnly = true;                 // Tarayıcıdan sadece HTTP erişimi
-    options.Cookie.IsEssential = true;              // GDPR için zorunlu çerez olarak işaretle
-});
-
-// 4️⃣ Authentication (Kimlik Doğrulama) ekle
+// B) Authentication (Giriş Sistemi - Cookie Bazlı)
+// Hoca'nın projesindeki mantığın aynısı, sadece modernize edildi.
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login";      // Giriş yapılmadıysa yönlendirilecek sayfa
-        options.LogoutPath = "/Account/Logout";    // Çıkış sonrası yönlendirme
-        options.AccessDeniedPath = "/Account/AccessDenied"; // Yetkisiz erişim
+        options.Cookie.Name = "FitnessApp.Auth"; // Tarayıcıda görünecek çerez adı
+        options.LoginPath = "/Account/Login";     // Giriş yapmamış kullanıcıyı buraya at
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Yetkisiz giriş denemesi (Örn: Üye admin sayfasına girmeye çalışırsa)
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Oturum 60 dk sürsün
+        options.SlidingExpiration = true; // Kullanıcı aktifse süreyi uzat
     });
+
+// C) MVC Kontrolcüleri ve View'lar
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// 5️⃣ Middleware Pipeline (istek akışı)
+// ==========================================
+// 2. MIDDLEWARE PIPELINE (İstek İşleme Sırası)
+// ==========================================
+
+// Hata yönetimi (Canlı ortamda hata detaylarını gizler)
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -39,18 +41,15 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(); // wwwroot klasörünü (CSS, JS, Resimler) dışarı açar
 
 app.UseRouting();
 
-// 6️⃣ Authentication ve Authorization middleware’leri
-app.UseAuthentication();
-app.UseAuthorization();
+// ÖNEMLİ: Bu iki satırın sırası KESİNLİKLE böyle olmalı.
+app.UseAuthentication(); // 1. Kimlik Doğrulama (Kimsin?)
+app.UseAuthorization();  // 2. Yetkilendirme (Girebilir misin?)
 
-// 7️⃣ Session middleware’i
-app.UseSession();
-
-// 8️⃣ Varsayılan yönlendirme
+// Varsayılan Rota: Site açılınca Home/Index'e git.
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
