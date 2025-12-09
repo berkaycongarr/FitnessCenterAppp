@@ -8,16 +8,14 @@ namespace FitnessApp.Entities
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Hizmet Adı")]
-        public string Ad { get; set; } // Örn: Özel Ders, Grup Pilates
+        public string Ad { get; set; } // Özel Ders, Grup Dersi vb.
 
-        [Display(Name = "Ücret")]
+        [System.ComponentModel.DataAnnotations.Schema.Column(TypeName = "decimal(18,2)")]
         public decimal Ucret { get; set; }
 
-        [Display(Name = "Süre (Dakika)")]
-        public int Sure { get; set; } // Örn: 45, 60, 90 dakika
+        public int Sure { get; set; } // Dakika cinsinden (Örn: 60)
 
-        // Bu hizmet hangi randevularda var
+        // Bu hizmeti alan randevular
         public ICollection<Randevu> Randevular { get; set; }
     }
 }

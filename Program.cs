@@ -1,39 +1,46 @@
-﻿using FitnessApp.Entities; // Senin projendeki Namespace (Entities klasörünün olduğu yer)
+﻿using FitnessApp.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ==========================================
-// 1. SERVİS AYARLARI (Dependency Injection)
-// ==========================================
-
-// A) Veritabanı Bağlantısı (SQL Server)
+// 1. Veritabanı Servisi
 builder.Services.AddDbContext<FitnessDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// B) Authentication (Giriş Sistemi - Cookie Bazlı)
-// Hoca'nın projesindeki mantığın aynısı, sadece modernize edildi.
+// 2. Kimlik Doğrulama (Cookie)
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.Cookie.Name = "FitnessApp.Auth"; // Tarayıcıda görünecek çerez adı
-        options.LoginPath = "/Account/Login";     // Giriş yapmamış kullanıcıyı buraya at
-        options.AccessDeniedPath = "/Account/AccessDenied"; // Yetkisiz giriş denemesi (Örn: Üye admin sayfasına girmeye çalışırsa)
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Oturum 60 dk sürsün
-        options.SlidingExpiration = true; // Kullanıcı aktifse süreyi uzat
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
     });
 
-// C) MVC Kontrolcüleri ve View'lar
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// ==========================================
-// 2. MIDDLEWARE PIPELINE (İstek İşleme Sırası)
-// ==========================================
+// 3. Otomatik Admin Ekleme (Seeding)
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<FitnessDbContext>();
 
-// Hata yönetimi (Canlı ortamda hata detaylarını gizler)
+    // Admin yoksa ekle
+    if (!context.Users.Any(u => u.Role == "admin"))
+    {
+        context.Users.Add(new User
+        {
+            Username = "Admin Yonetici",
+            Email = "ogrencinumarasi@sakarya.edu.tr",
+            Password = "sau",
+            Role = "admin",
+            CreatedAt = DateTime.Now
+        });
+        context.SaveChanges();
+    }
+}
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -41,15 +48,13 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(); // wwwroot klasörünü (CSS, JS, Resimler) dışarı açar
+app.UseStaticFiles();
 
 app.UseRouting();
 
-// ÖNEMLİ: Bu iki satırın sırası KESİNLİKLE böyle olmalı.
-app.UseAuthentication(); // 1. Kimlik Doğrulama (Kimsin?)
-app.UseAuthorization();  // 2. Yetkilendirme (Girebilir misin?)
+app.UseAuthentication(); // ÖNCE
+app.UseAuthorization();  // SONRA
 
-// Varsayılan Rota: Site açılınca Home/Index'e git.
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

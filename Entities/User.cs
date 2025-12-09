@@ -7,34 +7,27 @@ namespace FitnessApp.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Kullanıcı adı zorunludur.")]
+        [Required(ErrorMessage = "Ad Soyad zorunludur.")]
         [StringLength(50)]
-        public string Username { get; set; } // Genellikle Email veya Ad
-
-        [StringLength(30)]
-        public string? UserSurname { get; set; }
+        public string Username { get; set; } // Ad Soyad
 
         [Required]
-        [StringLength(100)]
-        public string Password { get; set; }
+        public string Password { get; set; } // Şifre
 
-        [Required(ErrorMessage = "Email adresi zorunludur.")]
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
 
         public string? Phone { get; set; }
-
         public string? Gender { get; set; }
 
-        // Role: "admin", "uye", "antrenor"
-        [Required]
-        [StringLength(20)]
+        // Roller: "admin", "uye", "antrenor"
         public string Role { get; set; } = "uye";
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // İlişkiler
-        public Antrenor? Antrenor { get; set; } // Eğer kullanıcı bir antrenörse dolu olur
-        public ICollection<Randevu> Randevular { get; set; } // Üyenin randevuları
+        public Antrenor? Antrenor { get; set; }
+        public ICollection<Randevu> Randevular { get; set; }
     }
 }

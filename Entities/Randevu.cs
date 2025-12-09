@@ -7,11 +7,9 @@ namespace FitnessApp.Entities
     {
         [Key]
         public int Id { get; set; }
-
         public DateTime TarihSaat { get; set; }
 
-        // İlişkiler
-        public int UserId { get; set; } // Randevuyu alan üye
+        public int UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
 
@@ -23,8 +21,7 @@ namespace FitnessApp.Entities
         [ForeignKey("HizmetId")]
         public Hizmet Hizmet { get; set; }
 
-        // Onay Mekanizması İçin
-        // 0: Bekliyor, 1: Onaylandı, 2: İptal
+        // 0:Bekliyor, 1:Onaylı, 2:İptal
         public int Durum { get; set; } = 0;
     }
 }
