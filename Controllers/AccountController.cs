@@ -80,6 +80,60 @@ namespace FitnessApp.Controllers
             return View(model);
         }
 
+
+
+        // ... (Login metodlarının altına ekle)
+
+        // GET: /Account/Register
+        public IActionResult Register()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
+        }
+
+        // POST: /Account/Register
+        [HttpPost]
+        public IActionResult Register(RegisterVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                // 1. Email kontrolü (Daha önce kayıtlı mı?)
+                if (_context.Users.Any(x => x.Email == model.Email))
+                {
+                    ModelState.AddModelError("Email", "Bu email adresi zaten kayıtlı.");
+                    return View(model);
+                }
+
+                // 2. Yeni Kullanıcı Oluştur
+                User newUser = new User
+                {
+                    Username = model.Username,
+                    Email = model.Email,
+                    Password = model.Password, // Gerçek projede şifrele (Hash) ama ödev için böyle kalsın.
+                    Phone = model.Phone,
+                    Gender = model.Gender,
+                    Role = "uye", // Varsayılan rol ÜYE
+                    CreatedAt = DateTime.Now
+                };
+
+                _context.Users.Add(newUser);
+                _context.SaveChanges();
+
+                // 3. Başarılı ise Login sayfasına yönlendir
+                TempData["Message"] = "Kayıt başarılı! Giriş yapabilirsiniz.";
+                return RedirectToAction("Login");
+            }
+
+            return View(model);
+        }
+
+
+
+
+
         // Çıkış Yap
         public async Task<IActionResult> Logout()
         {

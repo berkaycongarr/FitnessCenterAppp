@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessApp.Entities
 {
@@ -7,15 +8,17 @@ namespace FitnessApp.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Hizmet adı zorunludur.")]
         public string Ad { get; set; } // Özel Ders, Grup Dersi vb.
 
-        [System.ComponentModel.DataAnnotations.Schema.Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,2)")] // Para formatı ayarı
         public decimal Ucret { get; set; }
 
         public int Sure { get; set; } // Dakika cinsinden (Örn: 60)
 
-        // Bu hizmeti alan randevular
-        public ICollection<Randevu> Randevular { get; set; }
+        // DÜZELTME BURADA:
+        // 'ICollection<Randevu>' yanına '?' koyduk.
+        // Artık "The Randevular field is required" hatası vermeyecek.
+        public virtual ICollection<Randevu>? Randevular { get; set; }
     }
-}
+} 

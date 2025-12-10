@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h2 class="display-4 text-primary">Yönetim Paneli</h2>
+            <p class="lead">Hoşgeldin Admin, buradan tüm sistemi yönetebilirsin.</p>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100 border-primary">
+                <div class="card-body">
+                    <h1 class="text-primary"><i class="fa-solid fa-dumbbell"></i></h1>
+                    <h5 class="card-title">Hizmet Yönetimi</h5>
+                    <p class="card-text">Dersleri ekle, düzenle veya sil.</p>
+                    <a asp-action="Hizmetler" class="btn btn-primary">Yönet</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100 border-success">
+                <div class="card-body">
+                    <h1 class="text-success"><i class="fa-solid fa-users-gear"></i></h1>
+                    <h5 class="card-title">Antrenör Yönetimi</h5>
+                    <p class="card-text">Eğitmenleri sisteme tanımla.</p>
+                    <a asp-action="Antrenorler" class="btn btn-success">Yönet</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100 border-warning">
+                <div class="card-body">
+                    <h1 class="text-warning"><i class="fa-solid fa-calendar-check"></i></h1>
+                    <h5 class="card-title">Randevular</h5>
+                    <p class="card-text">Tüm randevuları listele.</p>
+                    <button class="btn btn-secondary" disabled>Yakında...</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,7 @@
 ﻿using FitnessApp.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,15 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddControllersWithViews();
 
+// ============================================================
+// HATA BURADAYDI: app değişkeni sadece bir kere tanımlanmalı.
+// ============================================================
 var app = builder.Build();
+
+// DİL VE ONDALIK SAYI AYARI (Nokta kullanımı için)
+var cultureInfo = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 // 3. Otomatik Admin Ekleme (Seeding)
 using (var scope = app.Services.CreateScope())
