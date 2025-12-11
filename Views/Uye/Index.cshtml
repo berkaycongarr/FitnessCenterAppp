@@ -1,0 +1,73 @@
+﻿@model IEnumerable<FitnessApp.Entities.Randevu>
+
+@{
+    ViewData["Title"] = "Randevularım";
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary mb-4"><i class="fa-solid fa-list-check"></i> Randevularım</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            <h4>Henüz hiç randevunuz yok.</h4>
+            <p>Spor hayatına başlamak için hemen bir randevu oluşturun!</p>
+            <a asp-controller="Randevu" asp-action="Al" class="btn btn-primary">Randevu Al</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover shadow-sm align-middle">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th>Tarih</th>
+                        <th>Saat</th>
+                        <th>Hizmet</th>
+                        <th>Eğitmen</th>
+                        <th>Durum</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TarihSaat.ToString("dd MMMM yyyy")</td>
+                            
+                            <td><span class="badge bg-secondary">@item.TarihSaat.ToString("HH:mm")</span></td>
+                            
+                            <td>@item.Hizmet?.Ad</td>
+                            <td>@item.Antrenor?.Ad @item.Antrenor?.Soyad</td>
+                            
+                            <td>
+                                @if (item.Durum == 0)
+                                {
+                                    <span class="badge bg-warning text-dark">Beklemede</span>
+                                }
+                                else if (item.Durum == 1)
+                                {
+                                    <span class="badge bg-success">Onaylandı</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">İptal Edildi</span>
+                                }
+                            </td>
+                            
+                            <td>
+                                @if (item.Durum != 2 && item.TarihSaat > DateTime.Now)
+                                {
+                                    <a asp-action="IptalEt" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('Randevuyu iptal etmek istediğinize emin misiniz?');">
+                                        <i class="fa-solid fa-xmark"></i> İptal Et
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

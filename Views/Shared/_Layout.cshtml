@@ -50,20 +50,26 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
+                                <a class="nav-link text-primary fw-bold" asp-controller="Uye" asp-action="Index">
+                                    <i class="fa-solid fa-calendar-days"></i> Randevularım
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
                                 <span class="nav-link text-dark">
                                     <i class="fa-solid fa-user"></i> Hoşgeldin, <b>@User.Identity.Name</b>
                                 </span>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link btn btn-link text-danger" asp-controller="Account" asp-action="Logout">
-                                    <i class="fa-solid fa-right-from-bracket"></i> Çıkış Yap
+                                    <i class="fa-solid fa-right-from-bracket"></i> Çıkış
                                 </a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-primary" asp-controller="Account" asp-action="Login">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">
                                     <i class="fa-solid fa-right-to-bracket"></i> Giriş Yap
                                 </a>
                             </li>

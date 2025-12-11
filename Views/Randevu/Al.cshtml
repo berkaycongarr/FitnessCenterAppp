@@ -1,0 +1,75 @@
+﻿@model FitnessApp.Models.RandevuTalepVM
+
+@{
+    ViewData["Title"] = "Randevu Al";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4><i class="fa-solid fa-calendar-plus"></i> Yeni Randevu Oluştur</h4>
+                </div>
+                <div class="card-body bg-light">
+                    <form asp-action="Al" method="post">
+                        
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="HizmetId" class="form-label fw-bold">Hizmet Seçiniz</label>
+                                <select asp-for="HizmetId" class="form-select" asp-items="ViewBag.Hizmetler">
+                                    <option value="">-- Hizmet Seç --</option>
+                                </select>
+                                <span asp-validation-for="HizmetId" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="AntrenorId" class="form-label fw-bold">Eğitmen Seçiniz</label>
+                                <select asp-for="AntrenorId" class="form-select" asp-items="ViewBag.Antrenorler">
+                                    <option value="">-- Eğitmen Seç --</option>
+                                </select>
+                                <span asp-validation-for="AntrenorId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Tarih" class="form-label fw-bold">Tarih</label>
+                                <input asp-for="Tarih" class="form-control" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                <span asp-validation-for="Tarih" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Saat" class="form-label fw-bold">Saat</label>
+                                <select asp-for="Saat" class="form-select">
+                                    <option value="">-- Saat Seç --</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                </select>
+                                <span asp-validation-for="Saat" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid mt-3">
+                            <button type="submit" class="btn btn-primary btn-lg">Randevuyu Onayla</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
