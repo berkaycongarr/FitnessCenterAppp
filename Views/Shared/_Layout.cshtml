@@ -35,6 +35,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Antrenor" asp-action="Index">Eğitmenler</a>
                         </li>
+                        <li class="nav-item">
+                               <a class="nav-link text-success fw-bold" asp-area="" asp-controller="AI" asp-action="Index">
+                                 <i class="fa-solid fa-robot"></i> AI Coach
+                              </a>
+                        </li>
                         
                         @if (User.IsInRole("admin"))
                         {

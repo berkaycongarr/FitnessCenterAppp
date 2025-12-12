@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Eğitmenlerimiz";
+}
+
+<div class="container mt-4">
+    <div class="text-center mb-5">
+        <h2 class="display-5 text-primary">Profesyonel Eğitmenlerimiz</h2>
+        <p class="lead">Size en uygun eğitmeni bulmak için filtreleme yapabilirsiniz.</p>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" id="txtUzmanlik" class="form-control" placeholder="Uzmanlık ara (Örn: Pilates, Fitness)...">
+                <button class="btn btn-primary" type="button" onclick="verileriGetir()">Ara</button>
+            </div>
+            <small class="text-muted">API üzerinden canlı filtreleme yapar.</small>
+        </div>
+    </div>
+
+    <div class="row" id="antrenorListesi">
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Yükleniyor...</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Sayfa açıldığında tüm hocaları getir
+        document.addEventListener("DOMContentLoaded", function () {
+            verileriGetir();
+        });
+
+        // API'ye İstek Atan Fonksiyon
+        function verileriGetir() {
+            var uzmanlik = document.getElementById("txtUzmanlik").value;
+            var url = "/api/Api/Antrenorler";
+
+            // Eğer arama kutusu doluysa URL'e parametre ekle
+            if (uzmanlik) {
+                url += "?uzmanlik=" + uzmanlik;
+            }
+
+            // REST API Çağrısı (Fetch)
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    var html = "";
+                    
+                    if (data.length === 0) {
+                        html = `<div class="col-12 text-center alert alert-warning">Aradığınız kriterde eğitmen bulunamadı.</div>`;
+                    } else {
+                        data.forEach(item => {
+                            html += `
+                                <div class="col-md-4 mb-4">
+                                    <div class="card h-100 shadow-sm border-0">
+                                        <div class="card-body text-center">
+                                            <div class="mb-3">
+                                                <i class="fa-solid fa-user-tie fa-3x text-secondary"></i>
+                                            </div>
+                                            <h5 class="card-title fw-bold">${item.adSoyad}</h5>
+                                            <span class="badge bg-info text-dark mb-2">${item.uzmanlik}</span>
+                                            <p class="card-text text-muted small"><i class="fa-solid fa-envelope"></i> ${item.email}</p>
+                                        </div>
+                                        <div class="card-footer bg-white border-0 text-center pb-3">
+                                            <a href="/Randevu/Al" class="btn btn-outline-primary btn-sm">Randevu Al</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    document.getElementById("antrenorListesi").innerHTML = html;
+                })
+                .catch(error => console.error('Hata:', error));
+        }
+    </script>
+}

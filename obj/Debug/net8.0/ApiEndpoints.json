@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "ContainingType": "FitnessApp.Controllers.ApiController",
+    "Method": "GetAntrenorler",
+    "RelativePath": "api/Api/Antrenorler",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "uzmanlik",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
