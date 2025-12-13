@@ -6,7 +6,7 @@ namespace FitnessApp.Models
     {
         [Required(ErrorMessage = "Ad Soyad zorunludur.")]
         [Display(Name = "Ad Soyad")]
-        public string Username { get; set; } // Ad Soyad olarak kullanacağız
+        public string Username { get; set; } 
 
         [Required(ErrorMessage = "Email zorunludur.")]
         [EmailAddress(ErrorMessage = "Geçerli bir email giriniz.")]
@@ -16,7 +16,7 @@ namespace FitnessApp.Models
         [Phone]
         public string Phone { get; set; }
 
-        public string Gender { get; set; } // Erkek/Kadın
+        public string Gender { get; set; } 
 
         [Required(ErrorMessage = "Şifre zorunludur.")]
         [MinLength(3, ErrorMessage = "Şifre en az 3 karakter olmalıdır.")]

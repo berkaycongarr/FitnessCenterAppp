@@ -21,7 +21,7 @@ namespace FitnessApp.Entities
         [ForeignKey("HizmetId")]
         public Hizmet Hizmet { get; set; }
 
-        // 0:Bekliyor, 1:Onaylı, 2:İptal
+        
         public int Durum { get; set; } = 0;
     }
 }

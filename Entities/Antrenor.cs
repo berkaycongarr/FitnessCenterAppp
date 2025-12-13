@@ -14,7 +14,12 @@ namespace FitnessApp.Entities
         [Required]
         public string Soyad { get; set; }
 
-        public string UzmanlikAlani { get; set; } // Pilates, Fitness vb.
+        public string UzmanlikAlani { get; set; } 
+
+
+        
+        public int BaslangicSaati { get; set; } 
+        public int BitisSaati { get; set; }     
 
         public int UserId { get; set; }
         [ForeignKey("UserId")]

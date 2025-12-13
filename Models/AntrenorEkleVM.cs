@@ -18,9 +18,19 @@ namespace FitnessApp.Models
         public string Phone { get; set; }
 
         [Required(ErrorMessage = "Uzmanlık alanı zorunludur")]
-        public string UzmanlikAlani { get; set; } // Örn: Pilates, Fitness
+        public string UzmanlikAlani { get; set; } 
 
         [Required(ErrorMessage = "Şifre zorunludur")]
         public string Password { get; set; }
+
+        [Required]
+        [Range(0, 23)]
+        public int BaslangicSaati { get; set; }
+
+        [Required]
+        [Range(0, 23)]
+        public int BitisSaati { get; set; }
+
+
     }
 }

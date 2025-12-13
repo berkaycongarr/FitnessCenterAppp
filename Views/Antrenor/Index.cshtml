@@ -29,22 +29,22 @@
 
 @section Scripts {
     <script>
-        // Sayfa açıldığında tüm hocaları getir
+       
         document.addEventListener("DOMContentLoaded", function () {
             verileriGetir();
         });
 
-        // API'ye İstek Atan Fonksiyon
+        
         function verileriGetir() {
             var uzmanlik = document.getElementById("txtUzmanlik").value;
             var url = "/api/Api/Antrenorler";
 
-            // Eğer arama kutusu doluysa URL'e parametre ekle
+           
             if (uzmanlik) {
                 url += "?uzmanlik=" + uzmanlik;
             }
 
-            // REST API Çağrısı (Fetch)
+            
             fetch(url)
                 .then(response => response.json())
                 .then(data => {

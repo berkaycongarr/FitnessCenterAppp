@@ -6,19 +6,19 @@ namespace FitnessApp.Models
     {
         [Required(ErrorMessage = "Boy bilgisi zorunludur.")]
         [Range(100, 250, ErrorMessage = "Lütfen geçerli bir boy giriniz (cm).")]
-        public int Boy { get; set; } // cm cinsinden (Örn: 180)
+        public int Boy { get; set; } 
 
         [Required(ErrorMessage = "Kilo bilgisi zorunludur.")]
         [Range(30, 200, ErrorMessage = "Lütfen geçerli bir kilo giriniz (kg).")]
         public double Kilo { get; set; }
 
         [Required]
-        public string Cinsiyet { get; set; } // "Kadın", "Erkek"
+        public string Cinsiyet { get; set; }
 
         [Required]
-        public string Hedef { get; set; } // "Kilo Verme", "Kas Yapma", "Form Koruma"
+        public string Hedef { get; set; } 
 
-        // Yapay Zekanın ürettiği cevabı burada taşıyacağız
+       
         public string? AIResult { get; set; }
     }
 }

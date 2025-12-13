@@ -9,16 +9,14 @@ namespace FitnessApp.Entities
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Hizmet adı zorunludur.")]
-        public string Ad { get; set; } // Özel Ders, Grup Dersi vb.
+        public string Ad { get; set; }
 
-        [Column(TypeName = "decimal(18,2)")] // Para formatı ayarı
+        [Column(TypeName = "decimal(18,2)")] 
         public decimal Ucret { get; set; }
 
-        public int Sure { get; set; } // Dakika cinsinden (Örn: 60)
+        public int Sure { get; set; } 
 
-        // DÜZELTME BURADA:
-        // 'ICollection<Randevu>' yanına '?' koyduk.
-        // Artık "The Randevular field is required" hatası vermeyecek.
+      
         public virtual ICollection<Randevu>? Randevular { get; set; }
     }
 } 

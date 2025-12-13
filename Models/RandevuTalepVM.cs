@@ -17,6 +17,6 @@ namespace FitnessApp.Models
         public DateTime Tarih { get; set; }
 
         [Required(ErrorMessage = "Saat seçiniz.")]
-        public string Saat { get; set; } // Örn: "09:00", "14:00"
+        public string Saat { get; set; } 
     }
 }

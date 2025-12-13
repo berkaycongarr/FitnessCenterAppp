@@ -1,0 +1,68 @@
+﻿@model IEnumerable<FitnessApp.Entities.Hizmet>
+
+@{
+    ViewData["Title"] = "Hizmetlerimiz";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h2 class="display-5 text-primary fw-bold">Hizmetlerimiz</h2>
+        <p class="lead text-muted">Size en uygun programı seçin ve değişime başlayın.</p>
+    </div>
+
+    <div class="row">
+        @if (!Model.Any())
+        {
+            <div class="col-12 text-center">
+                <div class="alert alert-warning">
+                    Henüz eklenmiş bir hizmet bulunmamaktadır.
+                </div>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0 transition-hover">
+                        <div class="card-header bg-transparent border-0 text-center pt-4">
+                            <i class="fa-solid fa-dumbbell fa-3x text-primary"></i>
+                        </div>
+                        <div class="card-body text-center">
+                            <h4 class="card-title fw-bold">@item.Ad</h4>
+                            <h3 class="text-success my-3">@item.Ucret.ToString("N2") ₺</h3>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li><i class="fa-regular fa-clock text-muted"></i> Süre: <b>@item.Sure dk</b></li>
+                                <li><i class="fa-solid fa-check text-success"></i> Profesyonel Eğitmenler</li>
+                                <li><i class="fa-solid fa-check text-success"></i> Kişiye Özel Program</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-white border-0 text-center pb-4">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a asp-controller="Randevu" asp-action="Al" class="btn btn-primary btn-lg w-75 rounded-pill">
+                                    Randevu Al
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary w-75 rounded-pill">
+                                    Giriş Yap
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<style>
+    /* Kartların üzerine gelince hafif yukarı kalkması için efekt */
+    .transition-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        transition: all .3s ease-in-out;
+    }
+</style>

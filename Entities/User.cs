@@ -9,10 +9,10 @@ namespace FitnessApp.Entities
 
         [Required(ErrorMessage = "Ad Soyad zorunludur.")]
         [StringLength(50)]
-        public string Username { get; set; } // Ad Soyad
+        public string Username { get; set; } 
 
         [Required]
-        public string Password { get; set; } // Şifre
+        public string Password { get; set; } 
 
         [Required]
         [EmailAddress]
@@ -21,12 +21,12 @@ namespace FitnessApp.Entities
         public string? Phone { get; set; }
         public string? Gender { get; set; }
 
-        // Roller: "admin", "uye", "antrenor"
+       
         public string Role { get; set; } = "uye";
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        // İlişkiler
+        
         public Antrenor? Antrenor { get; set; }
         public ICollection<Randevu> Randevular { get; set; }
     }
